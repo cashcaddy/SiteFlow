@@ -5,6 +5,7 @@ export type SectionType =
   | 'hero'
   | 'about'
   | 'services'
+  | 'pricing'
   | 'contact'
   | 'footer'
 
