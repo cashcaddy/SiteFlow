@@ -161,7 +161,7 @@ const App: React.FC = () => {
             <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
               <i className="fa-solid fa-layer-group text-xl"></i>
             </div>
-            <span className="text-2xl font-black text-slate-800 tracking-tight">SiteFlow</span>
+            <span className="text-2xl font-black text-slate-800 tracking-tight">Spark Builder</span>
           </div>
           <button 
             onClick={() => setShowTemplates(true)}
@@ -177,7 +177,7 @@ const App: React.FC = () => {
               Build your website in <span className="text-blue-600">seconds.</span>
             </h1>
             <p className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed">
-              SiteFlow is the simplest way to create professional websites. Use AI to generate content, pick a template, and publish instantly.
+              Spark Builder is the simplest way to create professional websites. Use AI to generate content, pick a template, and publish instantly.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
@@ -287,7 +287,7 @@ const App: React.FC = () => {
             <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white shadow-lg">
               <i className="fa-solid fa-layer-group"></i>
             </div>
-            <span className="font-black text-slate-800 text-lg tracking-tight">SiteFlow</span>
+            <span className="font-black text-slate-800 text-lg tracking-tight">Spark Builder</span>
           </div>
 
           <div className="flex items-center bg-slate-100 p-1 rounded-xl">
