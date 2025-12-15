@@ -1,8 +1,7 @@
 
-import { Template } from './types';
+import { Template, Section } from './types';
 
-import { Section } from './types';
-
+// Explicitly type INITIAL_SECTIONS as Section[] to resolve SectionType mismatch in App.tsx
 export const INITIAL_SECTIONS: Section[] = [
   {
     id: 'h1',
@@ -95,6 +94,18 @@ export const TEMPLATES: Template[] = [
           }
         },
         {
+          id: 'pricing1',
+          type: 'pricing',
+          content: {
+            title: 'Simple Pricing',
+            plans: [
+              { name: 'Basic', price: '0', features: ['Core Features', 'Analytics'] },
+              { name: 'Pro', price: '29', features: ['Priority Support', 'Custom Domain'] },
+              { name: 'Enterprise', price: '99', features: ['Unlimited Access', 'API Support'] }
+            ]
+          }
+        },
+        {
           id: 'contact1',
           type: 'contact',
           content: {
@@ -106,46 +117,6 @@ export const TEMPLATES: Template[] = [
           id: 'footer1',
           type: 'footer',
           content: { copyright: '© 2024 NexusCorp Global.' }
-        }
-      ]
-    }
-  },
-  {
-    id: 'creative-folio',
-    name: 'Creative Portfolio',
-    category: 'Portfolio',
-    thumbnail: 'https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=400',
-    config: {
-      title: 'Creative Portfolio',
-      theme: { primaryColor: '#db2777', fontFamily: 'Inter' },
-      sections: [
-        {
-          id: 'h1',
-          type: 'header',
-          content: { logo: 'ARTIST', links: [{ label: 'Work', href: '#services' }, { label: 'About', href: '#about' }] }
-        },
-        {
-          id: 'hero1',
-          type: 'hero',
-          content: { 
-            title: 'Capturing Moments In Time', 
-            subtitle: 'Photographer & Visual Artist based in London.',
-            cta: 'View Gallery',
-            image: 'https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=80&w=1200'
-          }
-        },
-        {
-          id: 'about1',
-          type: 'about',
-          content: {
-            title: 'My Story',
-            text: 'I believe every frame tells a story. With over a decade of experience in visual arts, I bring perspectives to life.'
-          }
-        },
-        {
-          id: 'footer1',
-          type: 'footer',
-          content: { copyright: '© 2024 Artist Portfolio.' }
         }
       ]
     }
