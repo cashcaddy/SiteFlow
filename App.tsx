@@ -115,6 +115,7 @@ const App: React.FC = () => {
           return `
             <footer style="padding: 48px 24px; background: #0f172a; color: #94a3b8; text-align: center;">
               <p style="opacity: 0.6;">${content.copyright}</p>
+              <p style="opacity: 0.6;" >Build by Spark Builder with ❤️ </p>
             </footer>`;
         default: return '';
       }
