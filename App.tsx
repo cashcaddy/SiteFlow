@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import SectionPreview from './components/SectionPreview';
 import EmptyPage from './components/EmptyPage';
-import { WebsiteConfig, Template } from './types';
+import { WebsiteConfig, Template, Section } from './types';
 import { INITIAL_SECTIONS, TEMPLATES } from './constants';
 
 const App: React.FC = () => {
@@ -20,8 +20,8 @@ const App: React.FC = () => {
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'editor' | 'preview'>('editor');
   const [showTemplates, setShowTemplates] = useState(false);
+  const [draggedSectionIndex, setDraggedSectionIndex] = useState<number | null>(null);
 
-  // Still persist config locally for convenience
   useEffect(() => {
     const savedConfig = localStorage.getItem('siteflow_config');
     if (savedConfig) {
@@ -29,7 +29,6 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // Auto-save to local storage on config change
   useEffect(() => {
     localStorage.setItem('siteflow_config', JSON.stringify(config));
   }, [config]);
@@ -38,6 +37,25 @@ const App: React.FC = () => {
     setConfig(template.config);
     setShowTemplates(false);
     setAppState('builder');
+  };
+
+  const handleDragStart = (index: number) => {
+    setDraggedSectionIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent, targetIndex: number) => {
+    if (draggedSectionIndex === null || draggedSectionIndex === targetIndex) return;
+
+    const newSections = [...config.sections];
+    const [removed] = newSections.splice(draggedSectionIndex, 1);
+    newSections.splice(targetIndex, 0, removed);
+
+    setConfig({ ...config, sections: newSections });
+    setDraggedSectionIndex(null);
   };
 
   const downloadWebsite = () => {
@@ -122,26 +140,7 @@ const App: React.FC = () => {
     };
 
     const sectionsHtml = config.sections.map(generateSectionHtml).join('\n');
-    const fullHtml = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${config.title}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <style>
-      body { margin: 0; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
-      * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-    </style>
-</head>
-<body>
-    ${sectionsHtml}
-</body>
-</html>`;
+    const fullHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${config.title}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet"><style>body { margin: 0; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; } * { box-sizing: border-box; } html { scroll-behavior: smooth; }</style></head><body>${sectionsHtml}</body></html>`;
 
     const blob = new Blob([fullHtml], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
@@ -164,44 +163,14 @@ const App: React.FC = () => {
             </div>
             <span className="text-2xl font-black text-slate-800 tracking-tight">Spark Builder</span>
           </div>
-          <button 
-            onClick={() => setShowTemplates(true)}
-            className="bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-slate-800 transition-all shadow-md"
-          >
-            Start Building
-          </button>
+          <button onClick={() => setShowTemplates(true)} className="bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-slate-800 transition-all shadow-md">Start Building</button>
         </nav>
-
         <main className="flex-1 flex flex-col items-center justify-center text-center px-6 py-20">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-6xl md:text-7xl font-black text-slate-900 mb-8 leading-[1.1]">
-              Build your website in <span className="text-blue-600">seconds.</span>
-            </h1>
-            <p className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed">
-              Spark Builder is the simplest way to create professional websites. Use AI to generate content, pick a template, and publish instantly.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button 
-                onClick={() => setShowTemplates(true)}
-                className="px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-lg shadow-xl hover:bg-blue-700 hover:-translate-y-1 transition-all"
-              >
-                Create My Website
-              </button>
-              <button 
-                onClick={() => setShowTemplates(true)}
-                className="px-10 py-5 bg-white text-slate-900 border-2 border-slate-200 rounded-2xl font-black text-lg hover:border-slate-300 transition-all"
-              >
-                View Templates
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-20 w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-white">
-             <img 
-               src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2000" 
-               alt="Dashboard Preview"
-               className="w-full h-auto object-cover opacity-90"
-             />
+          <h1 className="text-6xl md:text-7xl font-black text-slate-900 mb-8 leading-tight">Build your website in <span className="text-blue-600 font-black">seconds.</span></h1>
+          <p className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto font-medium">Spark Builder is the simplest way to create professional websites. Use AI to generate content, pick a template, and publish instantly.</p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button onClick={() => setShowTemplates(true)} className="px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-lg shadow-xl hover:bg-blue-700 transition-all">Create My Website</button>
+            <button onClick={() => setShowTemplates(true)} className="px-10 py-5 bg-white text-slate-900 border-2 rounded-2xl font-black text-lg hover:border-slate-300 transition-all">View Templates</button>
           </div>
         </main>
 
@@ -209,34 +178,22 @@ const App: React.FC = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-300">
             <div className="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
               <div className="p-8 border-b flex justify-between items-center bg-slate-50/50">
-                <div>
-                  <h2 className="text-3xl font-black text-slate-800 tracking-tight">Choose a Template</h2>
-                  <p className="text-slate-500 mt-1">Start with a professionally designed foundation.</p>
-                </div>
-                <button 
-                  onClick={() => setShowTemplates(false)}
-                  className="w-10 h-10 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors"
-                >
-                  <i className="fa-solid fa-times text-xl"></i>
-                </button>
+                <h2 className="text-3xl font-black text-slate-800">Choose a Template</h2>
+                <button onClick={() => setShowTemplates(false)} className="w-10 h-10 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors"><i className="fa-solid fa-times text-xl"></i></button>
               </div>
               <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {TEMPLATES.map((tpl) => (
-                    <div 
-                      key={tpl.id}
-                      className="group relative border rounded-2xl overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 bg-white"
-                      onClick={() => handleSelectTemplate(tpl)}
-                    >
+                    <div key={tpl.id} className="group relative border rounded-2xl overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 bg-white" onClick={() => handleSelectTemplate(tpl)}>
                       <div className="aspect-[4/3] overflow-hidden bg-slate-200 relative">
                         <img src={tpl.thumbnail} alt={tpl.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                        <div className="absolute inset-0 bg-blue-600/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <div className="absolute inset-0 bg-blue-600/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                           <span className="bg-white px-6 py-3 rounded-full font-black text-blue-600 shadow-xl">Use Template</span>
                         </div>
                       </div>
                       <div className="p-6">
-                        <div className="text-xs font-black text-blue-600 uppercase tracking-widest mb-2">{tpl.category}</div>
                         <h3 className="font-bold text-xl text-slate-800">{tpl.name}</h3>
+                        <p className="text-xs text-slate-400 font-bold uppercase mt-1 tracking-widest">{tpl.category}</p>
                       </div>
                     </div>
                   ))}
@@ -251,98 +208,46 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-slate-50">
-      {/* Template Modal for Builder view */}
-      {showTemplates && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-            <div className="p-8 border-b flex justify-between items-center">
-              <h2 className="text-3xl font-black">Switch Template</h2>
-              <button onClick={() => setShowTemplates(false)} className="p-2 hover:bg-slate-100 rounded-full"><i className="fa-solid fa-times text-xl"></i></button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
-              <div className="grid md:grid-cols-3 gap-6">
-                {TEMPLATES.map((tpl) => (
-                  <div key={tpl.id} onClick={() => handleSelectTemplate(tpl)} className="border rounded-xl p-2 cursor-pointer hover:border-blue-500">
-                    <img src={tpl.thumbnail} className="rounded-lg mb-2" />
-                    <p className="font-bold">{tpl.name}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {viewMode === 'editor' && (
-        <Sidebar 
-          config={config} 
-          setConfig={setConfig} 
-          activeSectionId={activeSectionId}
-          setActiveSectionId={setActiveSectionId}
-        />
+        <Sidebar config={config} setConfig={setConfig} activeSectionId={activeSectionId} setActiveSectionId={setActiveSectionId} />
       )}
 
-      <main className="flex-1 flex flex-col h-full overflow-hidden relative">
+      <main className="flex-1 flex flex-col h-full overflow-hidden relative bg-slate-200">
         <div className="h-16 bg-white border-b flex items-center justify-between px-6 shadow-sm z-10">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setAppState('landing')}>
-            <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white shadow-lg">
-              <i className="fa-solid fa-layer-group"></i>
-            </div>
+            <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white shadow-lg"><i className="fa-solid fa-layer-group"></i></div>
             <span className="font-black text-slate-800 text-lg tracking-tight">Spark Builder</span>
           </div>
-
           <div className="flex items-center bg-slate-100 p-1 rounded-xl">
-            <button 
-              onClick={() => setViewMode('editor')}
-              className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'editor' ? 'bg-white shadow text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
-            >
-              <i className="fa-solid fa-pen mr-2"></i> Edit
-            </button>
-            <button 
-              onClick={() => setViewMode('preview')}
-              className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'preview' ? 'bg-white shadow text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
-            >
-              <i className="fa-solid fa-eye mr-2"></i> Preview
-            </button>
+            <button onClick={() => setViewMode('editor')} className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'editor' ? 'bg-white shadow text-blue-600' : 'text-slate-500'}`}><i className="fa-solid fa-pen mr-2"></i> Edit</button>
+            <button onClick={() => setViewMode('preview')} className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'preview' ? 'bg-white shadow text-blue-600' : 'text-slate-500'}`}><i className="fa-solid fa-eye mr-2"></i> Preview</button>
           </div>
-
           <div className="flex items-center gap-3">
-             <button 
-              onClick={downloadWebsite}
-              className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition-all flex items-center gap-2"
-            >
-              <i className="fa-solid fa-download"></i> Download Site
-            </button>
-            <button 
-              onClick={() => setShowTemplates(true)}
-              className="text-slate-500 hover:text-slate-800 font-bold text-sm px-4"
-            >
-              Templates
-            </button>
+             <button onClick={downloadWebsite} className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition-all flex items-center gap-2"><i className="fa-solid fa-download"></i> Download Site</button>
+             <button onClick={() => setShowTemplates(true)} className="text-slate-500 hover:text-slate-800 font-bold text-sm px-4">Templates</button>
           </div>
         </div>
-
-        <div className={`flex-1 overflow-y-auto custom-scrollbar ${viewMode === 'editor' ? 'bg-slate-200 p-4 md:p-8 lg:p-12' : 'bg-white'}`}>
-          <div 
-            className={`mx-auto bg-white shadow-2xl transition-all duration-700 overflow-hidden ${viewMode === 'editor' ? 'max-w-[1200px] min-h-[800px] rounded-3xl' : 'w-full min-h-full'}`}
-          >
+        
+        <div className={`flex-1 overflow-y-auto custom-scrollbar ${viewMode === 'editor' ? 'p-8' : 'p-0'}`}>
+          <div className={`mx-auto bg-white shadow-2xl transition-all duration-700 overflow-hidden ${viewMode === 'editor' ? 'max-w-[1000px] min-h-[800px] rounded-3xl' : 'w-full min-h-full rounded-none'}`}>
             {config.sections.length === 0 ? (
-              <EmptyPage onAddSection={() => {
-                setConfig(prev => ({
-                  ...prev,
-                  sections: INITIAL_SECTIONS
-                }));
-              }} />
+              <EmptyPage onAddSection={() => setConfig(prev => ({ ...prev, sections: INITIAL_SECTIONS }))} />
             ) : (
-              config.sections.map((section) => (
+              config.sections.map((section, index) => (
                 <div 
                   key={section.id} 
-                  className={`relative group ${activeSectionId === section.id && viewMode === 'editor' ? 'ring-4 ring-blue-500 ring-inset' : ''}`}
+                  draggable={viewMode === 'editor'}
+                  onDragStart={() => handleDragStart(index)}
+                  onDragOver={(e) => handleDragOver(e, index)}
+                  onDrop={(e) => handleDrop(e, index)}
+                  className={`relative group cursor-default ${activeSectionId === section.id && viewMode === 'editor' ? 'ring-4 ring-blue-500 ring-inset' : ''} ${draggedSectionIndex === index ? 'opacity-30' : 'opacity-100'}`} 
                   onClick={() => viewMode === 'editor' && setActiveSectionId(section.id)}
                 >
                   {viewMode === 'editor' && (
-                    <div className="absolute top-0 left-0 w-full h-full bg-blue-500/0 hover:bg-blue-500/5 cursor-pointer z-10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <span className="bg-blue-600 text-white text-xs font-black px-4 py-2 rounded-full shadow-xl">Edit Section</span>
+                    <div className="absolute top-4 right-4 flex gap-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="w-10 h-10 bg-white/90 backdrop-blur border shadow-lg rounded-full flex items-center justify-center text-slate-400 cursor-grab active:cursor-grabbing hover:text-blue-600" title="Drag to reorder">
+                        <i className="fa-solid fa-grip-vertical"></i>
+                      </div>
                     </div>
                   )}
                   <SectionPreview section={section} theme={config.theme} />
@@ -353,15 +258,37 @@ const App: React.FC = () => {
         </div>
 
         {viewMode === 'editor' && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-white/80 backdrop-blur-xl shadow-2xl border px-6 py-3 rounded-2xl">
-            <button className="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-600 transition-colors"><i className="fa-solid fa-mobile-screen"></i></button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-600 transition-colors"><i className="fa-solid fa-tablet-screen-button"></i></button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center text-blue-600 bg-blue-50 shadow-inner"><i className="fa-solid fa-desktop"></i></button>
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur shadow-2xl border px-6 py-3 rounded-2xl flex items-center gap-6 z-30 animate-in slide-in-from-bottom-4 duration-500">
+             <button className="flex items-center gap-2 text-xs font-black uppercase text-slate-400 hover:text-blue-600 transition-colors"><i className="fa-solid fa-mobile-screen"></i> Mobile</button>
+             <button className="flex items-center gap-2 text-xs font-black uppercase text-slate-400 hover:text-blue-600 transition-colors"><i className="fa-solid fa-tablet-screen-button"></i> Tablet</button>
+             <button className="flex items-center gap-2 text-xs font-black uppercase text-blue-600"><i className="fa-solid fa-desktop"></i> Desktop</button>
           </div>
         )}
       </main>
+
+      {showTemplates && viewMode === 'editor' && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-300">
+            <div className="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+              <div className="p-8 border-b flex justify-between items-center bg-slate-50/50">
+                <h2 className="text-3xl font-black text-slate-800">Switch Template</h2>
+                <button onClick={() => setShowTemplates(false)} className="w-10 h-10 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors"><i className="fa-solid fa-times text-xl"></i></button>
+              </div>
+              <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {TEMPLATES.map((tpl) => (
+                    <div key={tpl.id} className="group border rounded-2xl overflow-hidden cursor-pointer hover:shadow-xl transition-all" onClick={() => handleSelectTemplate(tpl)}>
+                      <img src={tpl.thumbnail} className="w-full aspect-video object-cover" />
+                      <div className="p-4"><p className="font-bold text-slate-800">{tpl.name}</p></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+      )}
     </div>
   );
 };
 
 export default App;
+
