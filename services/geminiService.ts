@@ -1,7 +1,7 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || 'AIzaSyCukdxpoGEuP6lv13_YGm7APqacWvxZ7EI' });
 
 export const generateSectionContent = async (type: string, description: string) => {
   const model = 'gemini-2.5-flash';
