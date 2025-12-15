@@ -174,7 +174,7 @@ const App: React.FC = () => {
         <main className="flex-1 flex flex-col items-center justify-center text-center px-6 py-20">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-6xl md:text-7xl font-black text-slate-900 mb-8 leading-[1.1]">
-              Launch your website in <span className="text-blue-600">seconds.</span>
+              Build your website in <span className="text-blue-600">seconds.</span>
             </h1>
             <p className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed">
               SiteFlow is the simplest way to create professional websites. Use AI to generate content, pick a template, and publish instantly.
