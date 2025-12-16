@@ -224,7 +224,7 @@ const Sidebar: React.FC<SidebarProps> = ({ config, setConfig, activeSectionId, s
                   rows={3}
                 />
                 <div className="grid grid-cols-2 gap-2">
-                  {['hero', 'about', 'services', 'pricing', 'contact'].map((type) => (
+                  {['hero', 'about', 'services'].map((type) => (
                     <button
                       key={type}
                       disabled={isGenerating || !aiPrompt}
