@@ -133,7 +133,6 @@ const App: React.FC = () => {
           return `
             <footer style="padding: 48px 24px; background: #0f172a; color: #94a3b8; text-align: center;">
               <p style="opacity: 0.6;">${content.copyright}</p>
-              <p style="opacity: 0.6;" >Build by Spark Builder with ❤️ </p>
             </footer>`;
         default: return '';
       }
@@ -161,13 +160,13 @@ const App: React.FC = () => {
             <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
               <i className="fa-solid fa-layer-group text-xl"></i>
             </div>
-            <span className="text-2xl font-black text-slate-800 tracking-tight">Spark Builder</span>
+            <span className="text-2xl font-black text-slate-800 tracking-tight">SiteFlow</span>
           </div>
           <button onClick={() => setShowTemplates(true)} className="bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-slate-800 transition-all shadow-md">Start Building</button>
         </nav>
         <main className="flex-1 flex flex-col items-center justify-center text-center px-6 py-20">
-          <h1 className="text-6xl md:text-7xl font-black text-slate-900 mb-8 leading-tight">Build your website in <span className="text-blue-600 font-black">seconds.</span></h1>
-          <p className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto font-medium">Spark Builder is the simplest way to create professional websites. Use AI to generate content, pick a template, and publish instantly.</p>
+          <h1 className="text-6xl md:text-7xl font-black text-slate-900 mb-8 leading-tight">Launch your website in <span className="text-blue-600 font-black">seconds.</span></h1>
+          <p className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto font-medium">SiteFlow is the simplest way to create professional websites. Use AI to generate content, pick a template, and publish instantly.</p>
           <div className="flex flex-col sm:flex-row gap-4">
             <button onClick={() => setShowTemplates(true)} className="px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-lg shadow-xl hover:bg-blue-700 transition-all">Create My Website</button>
             <button onClick={() => setShowTemplates(true)} className="px-10 py-5 bg-white text-slate-900 border-2 rounded-2xl font-black text-lg hover:border-slate-300 transition-all">View Templates</button>
@@ -216,7 +215,7 @@ const App: React.FC = () => {
         <div className="h-16 bg-white border-b flex items-center justify-between px-6 shadow-sm z-10">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setAppState('landing')}>
             <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white shadow-lg"><i className="fa-solid fa-layer-group"></i></div>
-            <span className="font-black text-slate-800 text-lg tracking-tight">Spark Builder</span>
+            <span className="font-black text-slate-800 text-lg tracking-tight">SiteFlow</span>
           </div>
           <div className="flex items-center bg-slate-100 p-1 rounded-xl">
             <button onClick={() => setViewMode('editor')} className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'editor' ? 'bg-white shadow text-blue-600' : 'text-slate-500'}`}><i className="fa-solid fa-pen mr-2"></i> Edit</button>
@@ -291,4 +290,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
