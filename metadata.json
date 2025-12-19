@@ -1,6 +1,7 @@
+
 {
-  "name": "Copy of SiteFlow Website Builder",
-  "description": "A professional drag-and-drop website builder with real-time preview, template selection, and AI-assisted content generation.",
+  "name": "Spark Builder",
+  "description": "A high-performance drag-and-drop website builder with real-time preview, intelligent templates, and Spark AI-assisted content generation.",
   "requestFramePermissions": [
     "camera",
     "microphone"
