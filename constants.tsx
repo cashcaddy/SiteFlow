@@ -1,16 +1,15 @@
 
 import { Template, Section } from './types';
 
-// Explicitly type INITIAL_SECTIONS as Section[] to resolve SectionType mismatch in App.tsx
 export const INITIAL_SECTIONS: Section[] = [
   {
     id: 'h1',
     type: 'header',
     content: {
-      logo: 'SiteFlow',
+      logo: 'Spark',
       links: [
-        { label: 'About', href: '#about' },
-        { label: 'Services', href: '#services' },
+        { label: 'Features', href: '#services' },
+        { label: 'Pricing', href: '#pricing' },
         { label: 'Contact', href: '#contact' }
       ]
     }
@@ -19,17 +18,17 @@ export const INITIAL_SECTIONS: Section[] = [
     id: 'hero1',
     type: 'hero',
     content: {
-      title: 'Build Your Dream Website Today',
-      subtitle: 'Beautifully designed sections that you can customize in minutes.',
-      cta: 'Get Started',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426'
+      title: 'Ignite Your Digital Presence',
+      subtitle: 'Build professional, high-performance websites in minutes with Spark AI.',
+      cta: 'Start Building Free',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2426'
     }
   },
   {
     id: 'footer1',
     type: 'footer',
     content: {
-      copyright: '© 2024 SiteFlow Builder. All rights reserved.'
+      copyright: '© 2024 Spark Builder. Built with passion.'
     }
   }
 ];
@@ -37,59 +36,59 @@ export const INITIAL_SECTIONS: Section[] = [
 export const TEMPLATES: Template[] = [
   {
     id: 'blank-canvas',
-    name: 'Blank Canvas',
+    name: 'Spark Minimal',
     category: 'Essential',
     thumbnail: 'https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?auto=format&fit=crop&q=80&w=400',
     config: {
-      title: 'New Project',
+      title: 'New Spark Project',
       theme: { primaryColor: '#2563eb', fontFamily: 'Inter' },
       sections: [
         {
           id: 'h1',
           type: 'header',
-          content: { logo: 'My Brand', links: [] }
+          content: { logo: 'Spark', links: [] }
         },
         {
           id: 'footer1',
           type: 'footer',
-          content: { copyright: '© 2024 My Brand. All rights reserved.' }
+          content: { copyright: '© 2024 Spark Project.' }
         }
       ]
     }
   },
   {
-    id: 'business-pro',
-    name: 'Business Pro',
+    id: 'saas-spark',
+    name: 'SaaS Ignite',
     category: 'Business',
-    thumbnail: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=400',
+    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=400',
     config: {
-      title: 'Business Pro',
+      title: 'Spark SaaS',
       theme: { primaryColor: '#2563eb', fontFamily: 'Inter' },
       sections: [
         {
           id: 'h1',
           type: 'header',
-          content: { logo: 'NexusCorp', links: [{ label: 'Solutions', href: '#services' }, { label: 'Contact', href: '#contact' }] }
+          content: { logo: 'IgniteApp', links: [{ label: 'Solutions', href: '#services' }, { label: 'Pricing', href: '#pricing' }] }
         },
         {
           id: 'hero1',
           type: 'hero',
           content: { 
-            title: 'Modern Solutions for Modern Business', 
-            subtitle: 'We help you scale with enterprise-grade tools and local care.',
-            cta: 'Our Services',
-            image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200'
+            title: 'Automate Your Growth', 
+            subtitle: 'Powerful tools for teams that want to move faster and build better.',
+            cta: 'Get Started',
+            image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=1200'
           }
         },
         {
           id: 'services1',
           type: 'services',
           content: {
-            title: 'Our Solutions',
+            title: 'Why Choose Spark?',
             items: [
-              { title: 'Cloud Integration', desc: 'Seamlessly move your operations to the cloud.' },
-              { title: 'Security Audits', desc: 'Protect your data with enterprise security.' },
-              { title: 'AI Automation', desc: 'Boost efficiency with smart workflows.' }
+              { title: 'Lightning Fast', desc: 'Optimized for speed and SEO out of the box.' },
+              { title: 'AI Powered', desc: 'Generate high-quality content instantly.' },
+              { title: 'Full Control', desc: 'Customize every pixel to match your brand.' }
             ]
           }
         },
@@ -97,26 +96,18 @@ export const TEMPLATES: Template[] = [
           id: 'pricing1',
           type: 'pricing',
           content: {
-            title: 'Simple Pricing',
+            title: 'Pricing for Every Stage',
             plans: [
-              { name: 'Basic', price: '0', features: ['Core Features', 'Analytics'] },
-              { name: 'Pro', price: '29', features: ['Priority Support', 'Custom Domain'] },
-              { name: 'Enterprise', price: '99', features: ['Unlimited Access', 'API Support'] }
+              { name: 'Spark', price: '0', features: ['Core Components', 'Spark Domain'] },
+              { name: 'Flare', price: '19', features: ['Custom Domain', 'AI Analytics'] },
+              { name: 'Nova', price: '49', features: ['White-labeling', 'API Access'] }
             ]
-          }
-        },
-        {
-          id: 'contact1',
-          type: 'contact',
-          content: {
-            title: 'Get In Touch',
-            subtitle: 'Ready to take the next step? Contact us today.'
           }
         },
         {
           id: 'footer1',
           type: 'footer',
-          content: { copyright: '© 2024 NexusCorp Global.' }
+          content: { copyright: '© 2024 SaaS Ignite. Powered by Spark.' }
         }
       ]
     }
