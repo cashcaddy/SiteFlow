@@ -8,7 +8,7 @@ import { GoogleGenAI } from "@google/genai";
 
 export const generateSectionContent = async (type: string, description: string) => {
   // Always initialize inside the function or use a getter to ensure the most recent API Key is used
-  const ai = new GoogleGenAI({ apiKey: AIzaSyDosFNvgv1EZt-jsbyS0CK9yASyFzljt9E });
+  const ai = new GoogleGenAI({ apiKey: AIzaSyC3OB7k1RGTHLj6v_DrBA5MtriWqYI9Y2Y });
   const model = 'gemini-2.5-flash';
   
   const prompt = `Generate content for a website section of type "${type}" based on this user request: "${description}". 
