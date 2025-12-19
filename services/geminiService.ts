@@ -8,8 +8,8 @@ import { GoogleGenAI } from "@google/genai";
 
 export const generateSectionContent = async (type: string, description: string) => {
   // Use process.env.API_KEY directly as required
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  const model = 'gemini-3-flash-preview';
+  const ai = new GoogleGenAI({ apiKey: 'AIzaSyC3OB7k1RGTHLj6v_DrBA5MtriWqYI9Y2Y'});
+  const model = 'Gemini 2.0 Flash';
   
   const prompt = `You are the content engine for "Spark Builder", a modern website creation tool.
   Generate content for a website section of type "${type}" based on this user request: "${description}". 
