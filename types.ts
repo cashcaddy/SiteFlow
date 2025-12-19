@@ -1,14 +1,5 @@
 
-export type SectionType =
-  | 'custom'
-  | 'header'
-  | 'hero'
-  | 'about'
-  | 'services'
-  | 'pricing'
-  | 'contact'
-  | 'footer'
-
+export type SectionType = 'header' | 'hero' | 'about' | 'services' | 'pricing' | 'contact' | 'footer' | 'custom';
 
 export interface Element {
   id: string;
