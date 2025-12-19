@@ -1,51 +1,41 @@
-
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 
 /**
  * Gemini Service
- * Handles content generation for various website sections using the Google GenAI SDK.
+ * Generates structured JSON for website sections.
  */
-
 export const generateSectionContent = async (type: string, description: string) => {
-  // Always initialize inside the function or use a getter to ensure the most recent API Key is used
-  const ai = new GoogleGenAI({ apiKey: AIzaSyC3OB7k1RGTHLj6v_DrBA5MtriWqYI9Y2Y });
-  const model = 'gemini-2.5-flash';
+  // Initialize with your API Key
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'AIzaSyC3OB7k1RGTHLj6v_DrBA5MtriWqYI9Y2Y');
   
-  const prompt = `Generate content for a website section of type "${type}" based on this user request: "${description}". 
-  Provide the result in a clean JSON format compatible with the following schemas.
-  
-  Rules:
-  1. ONLY return the JSON object. Do not include markdown code blocks like \`\`\`json.
-  2. If type is "hero": { "title": "...", "subtitle": "...", "cta": "Button Text", "image": "Unsplash URL" }
-  3. If type is "about": { "title": "...", "text": "..." }
-  4. If type is "services": { "title": "...", "items": [{ "title": "...", "desc": "..." }] }
-  5. If type is "pricing": { "title": "...", "plans": [{ "name": "...", "price": "...", "features": ["...", "..."] }] }
-  6. If type is "contact": { "title": "...", "subtitle": "..." }
-  
-  Section Type: ${type}
-  Description: ${description}`;
+  // Use 'gemini-1.5-flash' for speed and cost-efficiency
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-1.5-flash",
+    generationConfig: {
+      responseMimeType: "application/json",
+    }
+  });
+
+  const prompt = `
+    Generate content for a website section of type "${type}" based on this request: "${description}".
+    Return a JSON object matching the schema for "${type}".
+    
+    Context:
+    - hero: { title, subtitle, cta, image }
+    - about: { title, text }
+    - services: { title, items: [{ title, desc }] }
+    - pricing: { title, plans: [{ name, price, features: [] }] }
+    - contact: { title, subtitle }
+  `;
 
   try {
-    const response = await ai.models.generateContent({
-      model: model,
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json'
-      }
-    });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
     
-    // Access response.text directly (property access, not a method call)
-    let text = response.text || '{}';
-    
-    // Robust cleaning: Gemini sometimes wraps JSON in markdown blocks even when told not to.
-    if (text.includes('```')) {
-      text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-    }
-
     return JSON.parse(text);
   } catch (error) {
     console.error("Gemini AI Content Generation failed:", error);
-    // Return a default object if parsing or API fails so the app doesn't crash
     return null;
   }
 };
