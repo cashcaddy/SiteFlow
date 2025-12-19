@@ -1,4 +1,8 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+// Correct
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// Incorrect (Common mistake)
+import { GoogleGenAI } from "@google/genai";
 
 /**
  * Gemini Service
