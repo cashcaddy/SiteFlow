@@ -9,7 +9,7 @@ import { INITIAL_SECTIONS, TEMPLATES } from './constants';
 const App: React.FC = () => {
   const [appState, setAppState] = useState<'landing' | 'builder'>('landing');
   const [config, setConfig] = useState<WebsiteConfig>({
-    title: 'My Awesome Site',
+    title: 'New Spark Site',
     theme: {
       primaryColor: '#2563eb',
       fontFamily: 'Inter',
@@ -23,14 +23,14 @@ const App: React.FC = () => {
   const [draggedSectionIndex, setDraggedSectionIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    const savedConfig = localStorage.getItem('siteflow_config');
+    const savedConfig = localStorage.getItem('spark_builder_config');
     if (savedConfig) {
       setConfig(JSON.parse(savedConfig));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('siteflow_config', JSON.stringify(config));
+    localStorage.setItem('spark_builder_config', JSON.stringify(config));
   }, [config]);
 
   const handleSelectTemplate = (template: Template) => {
@@ -145,7 +145,7 @@ const App: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'index.html';
+    a.download = 'spark-site.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -156,20 +156,22 @@ const App: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col">
         <nav className="p-6 flex justify-between items-center max-w-7xl mx-auto w-full">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-default">
             <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
-              <i className="fa-solid fa-layer-group text-xl"></i>
+              <i className="fa-solid fa-bolt text-xl"></i>
             </div>
-            <span className="text-2xl font-black text-slate-800 tracking-tight">SiteFlow</span>
+            <span className="text-2xl font-black text-slate-800 tracking-tight">Spark Builder</span>
           </div>
-          <button onClick={() => setShowTemplates(true)} className="bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-slate-800 transition-all shadow-md">Start Building</button>
+          <button onClick={() => setShowTemplates(true)} className="bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-slate-800 transition-all shadow-md">Get Started</button>
         </nav>
         <main className="flex-1 flex flex-col items-center justify-center text-center px-6 py-20">
-          <h1 className="text-6xl md:text-7xl font-black text-slate-900 mb-8 leading-tight">Launch your website in <span className="text-blue-600 font-black">seconds.</span></h1>
-          <p className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto font-medium">SiteFlow is the simplest way to create professional websites. Use AI to generate content, pick a template, and publish instantly.</p>
+          <h1 className="text-6xl md:text-7xl font-black text-slate-900 mb-8 leading-tight">
+            Build with <span className="shimmer-text">Spark AI.</span>
+          </h1>
+          <p className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto font-medium">Spark Builder is the intelligent way to launch your web presence. High-performance sections, AI content generation, and instant publishing.</p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <button onClick={() => setShowTemplates(true)} className="px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-lg shadow-xl hover:bg-blue-700 transition-all">Create My Website</button>
-            <button onClick={() => setShowTemplates(true)} className="px-10 py-5 bg-white text-slate-900 border-2 rounded-2xl font-black text-lg hover:border-slate-300 transition-all">View Templates</button>
+            <button onClick={() => setShowTemplates(true)} className="px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-lg shadow-xl hover:bg-blue-700 transition-all">Create Site Now</button>
+            <button onClick={() => setShowTemplates(true)} className="px-10 py-5 bg-white text-slate-900 border-2 rounded-2xl font-black text-lg hover:border-slate-300 transition-all">Browse Designs</button>
           </div>
         </main>
 
@@ -177,7 +179,7 @@ const App: React.FC = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-300">
             <div className="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
               <div className="p-8 border-b flex justify-between items-center bg-slate-50/50">
-                <h2 className="text-3xl font-black text-slate-800">Choose a Template</h2>
+                <h2 className="text-3xl font-black text-slate-800">Select Design</h2>
                 <button onClick={() => setShowTemplates(false)} className="w-10 h-10 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors"><i className="fa-solid fa-times text-xl"></i></button>
               </div>
               <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
@@ -187,7 +189,7 @@ const App: React.FC = () => {
                       <div className="aspect-[4/3] overflow-hidden bg-slate-200 relative">
                         <img src={tpl.thumbnail} alt={tpl.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                         <div className="absolute inset-0 bg-blue-600/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                          <span className="bg-white px-6 py-3 rounded-full font-black text-blue-600 shadow-xl">Use Template</span>
+                          <span className="bg-white px-6 py-3 rounded-full font-black text-blue-600 shadow-xl">Ignite This Template</span>
                         </div>
                       </div>
                       <div className="p-6">
@@ -214,16 +216,16 @@ const App: React.FC = () => {
       <main className="flex-1 flex flex-col h-full overflow-hidden relative bg-slate-200">
         <div className="h-16 bg-white border-b flex items-center justify-between px-6 shadow-sm z-10">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setAppState('landing')}>
-            <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white shadow-lg"><i className="fa-solid fa-layer-group"></i></div>
-            <span className="font-black text-slate-800 text-lg tracking-tight">SiteFlow</span>
+            <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white shadow-lg"><i className="fa-solid fa-bolt"></i></div>
+            <span className="font-black text-slate-800 text-lg tracking-tight">Spark</span>
           </div>
           <div className="flex items-center bg-slate-100 p-1 rounded-xl">
-            <button onClick={() => setViewMode('editor')} className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'editor' ? 'bg-white shadow text-blue-600' : 'text-slate-500'}`}><i className="fa-solid fa-pen mr-2"></i> Edit</button>
-            <button onClick={() => setViewMode('preview')} className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'preview' ? 'bg-white shadow text-blue-600' : 'text-slate-500'}`}><i className="fa-solid fa-eye mr-2"></i> Preview</button>
+            <button onClick={() => setViewMode('editor')} className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'editor' ? 'bg-white shadow text-blue-600' : 'text-slate-500'}`}><i className="fa-solid fa-pen mr-2"></i> Design</button>
+            <button onClick={() => setViewMode('preview')} className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'preview' ? 'bg-white shadow text-blue-600' : 'text-slate-500'}`}><i className="fa-solid fa-eye mr-2"></i> Live</button>
           </div>
           <div className="flex items-center gap-3">
-             <button onClick={downloadWebsite} className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition-all flex items-center gap-2"><i className="fa-solid fa-download"></i> Download Site</button>
-             <button onClick={() => setShowTemplates(true)} className="text-slate-500 hover:text-slate-800 font-bold text-sm px-4">Templates</button>
+             <button onClick={downloadWebsite} className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition-all flex items-center gap-2"><i className="fa-solid fa-cloud-arrow-down"></i> Export</button>
+             <button onClick={() => setShowTemplates(true)} className="text-slate-500 hover:text-slate-800 font-bold text-sm px-4">Designs</button>
           </div>
         </div>
         
@@ -255,21 +257,13 @@ const App: React.FC = () => {
             )}
           </div>
         </div>
-
-        {viewMode === 'editor' && (
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur shadow-2xl border px-6 py-3 rounded-2xl flex items-center gap-6 z-30 animate-in slide-in-from-bottom-4 duration-500">
-             <button className="flex items-center gap-2 text-xs font-black uppercase text-slate-400 hover:text-blue-600 transition-colors"><i className="fa-solid fa-mobile-screen"></i> Mobile</button>
-             <button className="flex items-center gap-2 text-xs font-black uppercase text-slate-400 hover:text-blue-600 transition-colors"><i className="fa-solid fa-tablet-screen-button"></i> Tablet</button>
-             <button className="flex items-center gap-2 text-xs font-black uppercase text-blue-600"><i className="fa-solid fa-desktop"></i> Desktop</button>
-          </div>
-        )}
       </main>
 
       {showTemplates && viewMode === 'editor' && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-300">
             <div className="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
               <div className="p-8 border-b flex justify-between items-center bg-slate-50/50">
-                <h2 className="text-3xl font-black text-slate-800">Switch Template</h2>
+                <h2 className="text-3xl font-black text-slate-800">Switch Design</h2>
                 <button onClick={() => setShowTemplates(false)} className="w-10 h-10 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors"><i className="fa-solid fa-times text-xl"></i></button>
               </div>
               <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
